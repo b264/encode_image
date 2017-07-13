@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+
+arguments = ARGV
+
+image_filename = arguments.last
+
+unless image_filename
+  puts 'please pass the image filename as an argument'
+  exit 1
+end
+image_filename_ext = image_filename.split('.').last
+
+require 'base64'
+data = ''
+file = File.open(image_filename, 'r') do |file|
+  data = file.read
+end
+
+encoded = Base64.encode64 data
+
+out = 'data:image/' + image_filename_ext.downcase + ';base64,' + encoded
+out.gsub! "\n", ''
+puts out
+exit 0
